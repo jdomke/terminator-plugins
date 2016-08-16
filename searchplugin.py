@@ -1,32 +1,39 @@
+"""
+Written by John Cooper http://choffee.co.uk
+Copyright 2010 John Cooper
+See copyright file that comes with this software for full licence
+
+Modified by cgw 2011/11/06
+Modified by aramboi 2016/08/16
+"""
 import gtk
 import urllib
 import terminatorlib.plugin as plugin
 import re
 
-# Written by John Cooper http://choffee.co.uk
-# Copyright 2010 John Cooper
-# See copyright file that comes with this file for full licence
-
-# Modified by cgw 2011/11/06
+try:
+    from searchplugin_config import *
+except ImportError:
+    SEARCH_ENGINE = 'Google'
+    SEARCH_ENGINE_URI = 'https://www.google.com/search?q={}'
 
 # AVAILABLE must contain a list of all the classes that you want exposed
 AVAILABLE = ['SearchPlugin']
 
 _spaces = re.compile(" +")
 
-# TODO:   move some of the constants into a config object
 
 class SearchPlugin(plugin.Plugin):
     capabilities = ['terminal_menu']
 
     def do_search(self, searchMenu):
-        """Launch Google search for string"""
+        """Launch search for string"""
         if not self.searchstring:
             return
-        base_uri = "http://www.google.com/search?q=%s"
-        uri = base_uri % urllib.quote(self.searchstring.encode("utf-8"))
+        uri = SEARCH_ENGINE_URI.format(
+            urllib.quote_plus(self.searchstring.encode("utf-8")))
         gtk.show_uri(None, uri, gtk.gdk.CURRENT_TIME)
-        
+
     def callback(self, menuitems, menu, terminal):
         """Add our menu item to the menu"""
         self.terminal = terminal
@@ -45,10 +52,11 @@ class SearchPlugin(plugin.Plugin):
                 displaystring = self.searchstring[:37] + "..."
             else:
                 displaystring = self.searchstring
-            item.set_label("Search Google for \"%s\"" % displaystring)
+            item.set_label(
+                "Search {} for \"{}\"".format(SEARCH_ENGINE, displaystring))
             item.set_sensitive(True)
         else:
-            item.set_label("Search Google")
+            item.set_label("Search {}".format(SEARCH_ENGINE))
             item.set_sensitive(False)
         # Avoid turning any underscores in selection into menu accelerators
         item.set_use_underline(False)
