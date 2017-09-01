@@ -7,7 +7,7 @@ Modified by cgw 2011/11/06
 Modified by aramboi 2016/08/16
 Modified by jdomke 2017/09/01
 """
-from urllib import quote
+from urllib import quote_plus
 from sys import exit
 try:
     from gi import require_version
@@ -39,7 +39,7 @@ class SearchPlugin(MenuItem):
         if not self.searchstring:
             return
         uri = SEARCH_ENGINE_URI.format(
-            urllib.quote_plus(self.searchstring.encode("utf-8")))
+            quote_plus(self.searchstring.encode("utf-8")))
         Gtk.show_uri(None, uri, Gdk.CURRENT_TIME)
 
     def callback(self, menuitems, menu, terminal):
