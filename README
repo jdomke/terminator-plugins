@@ -1,6 +1,8 @@
 Some plugins for terminator
 
 Put them in ~/.config/terminator/plugins/
+and enable 'SearchPlugin' under Preferences
 
 Online Search: searchplugin.py
-    Open a new browser window with a google search for the selected text in a terminal
+    Open a new browser window with a search engine, such as google, for the
+    selected text in a terminal
