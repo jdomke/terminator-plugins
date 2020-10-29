@@ -7,7 +7,10 @@ Modified by cgw 2011/11/06
 Modified by aramboi 2016/08/16
 Modified by jdomke 2017/09/01
 """
-from urllib import quote_plus
+try:
+    from urllib import quote_plus           # Python 2.X
+except ImportError:
+    from urllib.parse import quote_plus     # Python 3+
 from sys import exit
 try:
     from gi import require_version
